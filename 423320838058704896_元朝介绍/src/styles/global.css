@@ -1,0 +1,118 @@
+/* ===== 全局样式 ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --gold: #c9a84c;
+  --gold-light: #e8d48b;
+  --gold-dark: #a8862e;
+  --red: #b22222;
+  --red-dark: #8b1a1a;
+  --red-light: #d44040;
+  --bg-dark: #1a0f0a;
+  --bg-card: #2a1a12;
+  --text-light: #f5e6d3;
+  --text-muted: #c4a882;
+  --border-gold: rgba(201, 168, 76, 0.3);
+}
+
+body {
+  font-family: "STKaiti", "KaiTi", "SimSun", "Microsoft YaHei", serif;
+  background: var(--bg-dark);
+  color: var(--text-light);
+  min-height: 100vh;
+  line-height: 1.8;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+/* ===== 滚动条 ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+/* ===== 通用容器 ===== */
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2.4rem;
+  color: var(--gold);
+  margin-bottom: 12px;
+  letter-spacing: 6px;
+  text-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
+}
+
+.page-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 50px;
+  letter-spacing: 2px;
+}
+
+/* ===== 装饰分割线 ===== */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin: 30px 0;
+}
+.divider-line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.divider-icon {
+  color: var(--gold);
+  font-size: 1.2rem;
+}
+
+/* ===== 卡片 ===== */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-gold);
+  border-radius: 8px;
+  padding: 30px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(201, 168, 76, 0.15);
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 20px 16px 60px;
+  }
+  .page-title {
+    font-size: 1.8rem;
+    letter-spacing: 4px;
+  }
+}
