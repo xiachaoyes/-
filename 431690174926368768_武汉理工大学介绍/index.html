@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>武汉理工大学 - 欢迎您</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== 固定导航栏 ===== -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="#" class="nav-logo">武汉理工大学</a>
+      <button class="nav-toggle" id="navToggle" aria-label="切换菜单">☰</button>
+      <nav class="nav-menu" id="navMenu">
+        <ul>
+          <li><a href="#overview" class="nav-link active">学校概况</a></li>
+          <li><a href="#history" class="nav-link">历史沿革</a></li>
+          <li><a href="#colleges" class="nav-link">院系设置</a></li>
+          <li><a href="#campus" class="nav-link">校园风采</a></li>
+          <li><a href="#admission" class="nav-link">招生就业</a></li>
+          <li><a href="#contact" class="nav-link">联系我们</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== 轮播图区域 ===== -->
+  <section class="hero-slider" id="heroSlider">
+    <div class="slider-container" id="sliderContainer">
+      <!-- JS 动态生成轮播项 -->
+    </div>
+    <div class="slider-dots" id="sliderDots"></div>
+    <button class="slider-btn slider-prev" id="sliderPrev">‹</button>
+    <button class="slider-btn slider-next" id="sliderNext">›</button>
+  </section>
+
+  <!-- ===== 学校概况 ===== -->
+  <section class="section" id="overview">
+    <div class="container">
+      <h2 class="section-title">学校概况</h2>
+      <div class="overview-content">
+        <div class="overview-text">
+          <p>武汉理工大学是教育部直属全国重点大学，首批列入国家"211工程"和"双一流"建设高校。学校位于九省通衢的湖北省武汉市，占地面积近4000亩，拥有马房山、余家头和南湖三个校区。</p>
+          <p>学校以工学为主，理、工、经、管、文、法、艺等多学科协调发展，在材料科学与工程、船舶与海洋工程、交通运输工程等领域具有显著优势。建校以来，已为国家培养输送了60余万名高级专门人才。</p>
+        </div>
+        <div class="overview-stats" id="overviewStats">
+          <!-- JS 动态生成统计数据卡片 -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 历史沿革 ===== -->
+  <section class="section section-alt" id="history">
+    <div class="container">
+      <h2 class="section-title">历史沿革</h2>
+      <div class="timeline" id="timeline">
+        <!-- JS 动态生成时间轴 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 院系设置 ===== -->
+  <section class="section" id="colleges">
+    <div class="container">
+      <h2 class="section-title">院系设置</h2>
+      <div class="college-grid" id="collegeGrid">
+        <!-- JS 动态生成学院卡片 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 校园风采 ===== -->
+  <section class="section section-alt" id="campus">
+    <div class="container">
+      <h2 class="section-title">校园风采</h2>
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- JS 动态生成画廊 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 招生就业 ===== -->
+  <section class="section" id="admission">
+    <div class="container">
+      <h2 class="section-title">招生就业</h2>
+      <div class="admission-content">
+        <div class="admission-left">
+          <h3>招生计划（模拟数据）</h3>
+          <div class="table-wrapper">
+            <table class="data-table" id="admissionTable">
+              <!-- JS 动态生成 -->
+            </table>
+          </div>
+        </div>
+        <div class="admission-right">
+          <h3>就业率趋势</h3>
+          <div class="chart-container" id="chartContainer">
+            <!-- JS 动态生成柱状图 -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 联系我们 ===== -->
+  <section class="section section-alt" id="contact">
+    <div class="container">
+      <h2 class="section-title">联系我们</h2>
+      <div class="contact-content">
+        <div class="contact-info">
+          <h3>联系方式</h3>
+          <p><strong>地址：</strong>湖北省武汉市洪山区珞狮路122号</p>
+          <p><strong>电话：</strong>027-87651428</p>
+          <p><strong>邮箱：</strong>zsb@whut.edu.cn</p>
+          <p><strong>邮编：</strong>430070</p>
+        </div>
+        <div class="contact-form-wrapper">
+          <h3>留言反馈</h3>
+          <form id="contactForm" class="contact-form">
+            <div class="form-group">
+              <label for="formName">姓名 <span class="required">*</span></label>
+              <input type="text" id="formName" name="name" required placeholder="请输入您的姓名">
+            </div>
+            <div class="form-group">
+              <label for="formEmail">邮箱 <span class="required">*</span></label>
+              <input type="email" id="formEmail" name="email" required placeholder="请输入您的邮箱">
+            </div>
+            <div class="form-group">
+              <label for="formMessage">留言内容 <span class="required">*</span></label>
+              <textarea id="formMessage" name="message" rows="4" required placeholder="请输入您的留言内容"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">提交留言</button>
+          </form>
+          <button class="btn btn-link" id="viewMessagesBtn">查看历史留言</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 页脚 ===== -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2024 武汉理工大学（模拟展示网站）</p>
+    </div>
+  </footer>
+
+  <!-- ===== 模态框（学院详情） ===== -->
+  <div class="modal-overlay" id="collegeModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <div class="modal-body" id="modalBody">
+        <!-- JS 动态填充 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Lightbox（图片放大） ===== -->
+  <div class="lightbox-overlay" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">&times;</button>
+    <img src="" alt="放大图片" class="lightbox-img" id="lightboxImg">
+  </div>
+
+  <!-- ===== 提交成功提示 ===== -->
+  <div class="toast" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
