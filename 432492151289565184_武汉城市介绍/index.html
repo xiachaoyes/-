@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>江城印象·武汉</title>
+    <style>
+        /* ===== 全局重置 & 基础 ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #333;
+            background: #fff;
+            line-height: 1.6;
+        }
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; display: block; }
+
+        /* ===== 导航栏 ===== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            min-height: 56px;
+        }
+        .navbar a {
+            color: #C8102E;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 14px 12px;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .navbar a:hover { background: #fef0f0; }
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #C8102E;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .nav-links { display: flex; flex-wrap: wrap; justify-content: center; }
+
+        /* ===== 英雄区 ===== */
+        .hero {
+            margin-top: 56px;
+            position: relative;
+            height: 80vh;
+            min-height: 400px;
+            background: url('https://picsum.photos/seed/wuhan-hero/1600/900') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(200,16,46,0.55);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            color: #fff;
+            padding: 20px;
+        }
+        .hero-content h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            margin-bottom: 12px;
+        }
+        .hero-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            color: #fff;
+            font-size: 28px;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* ===== 通用区域 ===== */
+        .section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #C8102E;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: #C8102E;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* ===== 江城概览 ===== */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        .overview-text p { margin-bottom: 10px; font-size: 1rem; }
+        .overview-text strong { color: #C8102E; }
+        .overview-img img { border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+        /* ===== 历史时间线 ===== */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            overflow-x: auto;
+            padding: 10px 0 20px;
+            gap: 4px;
+            position: relative;
+        }
+        .timeline::-webkit-scrollbar { height: 4px; }
+        .timeline::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+        .timeline-item {
+            flex-shrink: 0;
+            text-align: center;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            min-width: 70px;
+        }
+        .timeline-item:hover { background: #fef0f0; }
+        .timeline-item .year {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .timeline-item.active .year { color: #C8102E; }
+        .timeline-item .dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: #ddd;
+            margin: 6px auto;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .timeline-item.active .dot {
+            background: #C8102E;
+            transform: scale(1.3);
+        }
+        .timeline-item .label { font-size: 0.75rem; color: #999; }
+        .timeline-item.active .label { color: #C8102E; font-weight: 600; }
+
+        .history-detail {
+            margin-top: 24px;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 8px;
+            border-left: 4px solid #C8102E;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: center;
+        }
+        .history-detail img { border-radius: 8px; max-height: 250px; width: 100%; object-fit: cover; }
+        .history-detail h3 { color: #C8102E; margin-bottom: 8px; }
+        .history-detail p { font-size: 0.95rem; color: #555; }
+
+        /* ===== 美食卡片网格 ===== */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+        .card img { width: 100%; height: 180px; object-fit: cover; }
+        .card-body { padding: 14px 16px; }
+        .card-body h3 { font-size: 1.1rem; color: #C8102E; margin-bottom: 4px; }
+        .card-body p { font-size: 0.9rem; color: #666; }
+
+        /* ===== 模态窗 ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: #fff;
+            border-radius: 8px;
+            max-width: 560px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 28px;
+            position: relative;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px; right: 16px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            line-height: 1;
+            background: none;
+            border: none;
+        }
+        .modal-close:hover { color: #C8102E; }
+        .modal img { width: 100%; max-height: 240px; object-fit: cover; border-radius: 8px; margin-bottom: 16px; }
+        .modal h2 { color: #C8102E; margin-bottom: 8px; }
+        .modal p { font-size: 0.95rem; color: #555; margin-bottom: 6px; }
+        .modal .tag { display: inline-block; background: #fef0f0; color: #C8102E; padding: 2px 10px; border-radius: 12px; font-size: 0.8rem; margin-right: 6px; }
+
+        /* ===== 轮播 ===== */
+        .carousel-wrap {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .carousel-slide { display: none; }
+        .carousel-slide.active { display: block; }
+        .carousel-slide img { width: 100%; height: 400px; object-fit: cover; border-radius: 8px; }
+        .carousel-caption {
+            text-align: center;
+            padding: 14px 0;
+        }
+        .carousel-caption h3 { color: #C8102E; margin-bottom: 4px; }
+        .carousel-caption p { color: #666; font-size: 0.9rem; }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(200,16,46,0.7);
+            color: #fff;
+            border: none;
+            font-size: 24px;
+            padding: 10px 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            z-index: 10;
+        }
+        .carousel-btn:hover { background: #C8102E; }
+        .carousel-btn.prev { left: 10px; }
+        .carousel-btn.next { right: 10px; }
+        .carousel-dots {
+            text-align: center;
+            margin-top: 12px;
+        }
+        .carousel-dots span {
+            display: inline-block;
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: #ddd;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .carousel-dots span.active { background: #C8102E; }
+
+        /* ===== 名人卡片 ===== */
+        .person-card .card-body { text-align: center; }
+        .person-card img { height: 160px; }
+        .person-card .tag { display: inline-block; background: #fef0f0; color: #C8102E; padding: 2px 10px; border-radius: 12px; font-size: 0.75rem; margin: 4px 0 8px; }
+
+        /* ===== 游玩指南 ===== */
+        .guide-block { margin-bottom: 24px; }
+        .guide-block h3 { color: #C8102E; margin-bottom: 8px; font-size: 1.1rem; }
+        .guide-block p { color: #555; font-size: 0.95rem; margin-bottom: 4px; }
+        .guide-divider { height: 1px; background: #eee; margin: 20px 0; }
+
+        /* ===== 方言 ===== */
+        .dialect-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .dialect-card {
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            border: 1px solid #eee;
+        }
+        .dialect-card:hover { background: #fef0f0; }
+        .dialect-card .hanzi { font-size: 1.3rem; font-weight: 700; color: #C8102E; }
+        .dialect-card .pinyin { font-size: 0.85rem; color: #999; margin: 4px 0; }
+        .dialect-card .meaning { font-size: 0.9rem; color: #555; }
+        .copy-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: #fff;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            z-index: 3000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        .copy-toast.show { opacity: 1; }
+
+        /* ===== 页脚 ===== */
+        .footer {
+            background: #8B0000;
+            color: #fff;
+            text-align: center;
+            padding: 30px 20px;
+            font-size: 0.9rem;
+        }
+        .footer p { margin-bottom: 4px; opacity: 0.9; }
+
+        /* ===== 响应式 ===== */
+        @media (max-width: 768px) {
+            .navbar { justify-content: space-between; padding: 0 16px; }
+            .nav-toggle { display: block; }
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                padding-bottom: 10px;
+            }
+            .nav-links.open { display: flex; }
+            .nav-links a { padding: 10px; font-size: 13px; }
+
+            .hero-content h1 { font-size: 2rem; }
+            .hero-content p { font-size: 1rem; }
+            .hero { height: 60vh; min-height: 300px; }
+
+            .overview-grid { grid-template-columns: 1fr; }
+            .history-detail { grid-template-columns: 1fr; }
+            .carousel-slide img { height: 240px; }
+            .section { padding: 40px 16px; }
+            .card-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== 导航栏 ===== -->
+<nav class="navbar" id="navbar">
+    <button class="nav-toggle" id="navToggle" aria-label="菜单">☰</button>
+    <div class="nav-links" id="navLinks">
+        <a href="#overview">江城概览</a>
+        <a href="#history">历史记忆</a>
+        <a href="#food">舌尖武汉</a>
+        <a href="#landmarks">地标巡礼</a>
+        <a href="#celebrities">名人风采</a>
+        <a href="#guide">游玩指南</a>
+        <a href="#dialect">方言趣话</a>
+    </div>
+</nav>
+
+<!-- ===== 英雄区 ===== -->
+<section class="hero" id="hero">
+    <div class="hero-content">
+        <h1>江城印象·武汉</h1>
+        <p>两江交汇，三镇鼎立，百湖之城</p>
+    </div>
+    <a href="#overview" class="scroll-down">⌄</a>
+</section>
+
+<!-- ===== 江城概览 ===== -->
+<section class="section" id="overview">
+    <h2 class="section-title">江城概览</h2>
+    <div class="overview-grid">
+        <div class="overview-text">
+            <p><strong>简称：</strong>江城</p>
+            <p><strong>别称：</strong>百湖之市、桥都、东方芝加哥</p>
+            <p><strong>面积：</strong>约 8,569 平方公里</p>
+            <p><strong>人口：</strong>约 1,377 万（2023年）</p>
+            <p><strong>地位：</strong>湖北省省会，国家中心城市，长江经济带核心城市，拥有 3500 年建城史，是中国内陆最大的水陆空交通枢纽。</p>
+        </div>
+        <div class="overview-img">
+            <img src="https://picsum.photos/seed/wuhan-map/600/400" alt="武汉城市剪影">
+        </div>
+    </div>
+</section>
+
+<!-- ===== 历史记忆 ===== -->
+<section class="section" id="history">
+    <h2 class="section-title">历史记忆</h2>
+    <div class="timeline" id="timeline"></div>
+    <div class="history-detail" id="historyDetail">
+        <div>
+            <h3 id="historyTitle">盘龙古城</h3>
+            <p id="historyDesc">点击上方时间节点，探索武汉的千年历史。</p>
+        </div>
+        <div>
+            <img id="historyImg" src="https://picsum.photos/seed/wuhan-history/600/400" alt="历史图片">
+        </div>
+    </div>
+</section>
+
+<!-- ===== 舌尖武汉 ===== -->
+<section class="section" id="food">
+    <h2 class="section-title">舌尖武汉</h2>
+    <div class="card-grid" id="foodGrid"></div>
+</section>
+
+<!-- ===== 地标巡礼 ===== -->
+<section class="section" id="landmarks">
+    <h2 class="section-title">地标巡礼</h2>
+    <div class="carousel-wrap" id="carouselWrap">
+        <div id="carouselInner"></div>
+        <button class="carousel-btn prev" id="carouselPrev">‹</button>
+        <button class="carousel-btn next" id="carouselNext">›</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+        <div class="carousel-caption" id="carouselCaption">
+            <h3 id="landmarkName">黄鹤楼</h3>
+            <p id="landmarkDesc">天下江山第一楼</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== 名人风采 ===== -->
+<section class="section" id="celebrities">
+    <h2 class="section-title">名人风采</h2>
+    <div class="card-grid" id="celebrityGrid"></div>
+</section>
+
+<!-- ===== 游玩指南 ===== -->
+<section class="section" id="guide">
+    <h2 class="section-title">游玩指南</h2>
+    <div class="guide-block">
+        <h3>🌸 最佳旅行季节</h3>
+        <p><strong>春季（3-4月）：</strong>武汉大学樱花盛开，东湖绿道春意盎然，是武汉最美的季节。</p>
+        <p><strong>秋季（9-11月）：</strong>天高气爽，适合登黄鹤楼远眺长江，漫步汉口江滩看红叶。</p>
+        <p>夏季炎热多雨，冬季湿冷，建议避开极端天气出行。</p>
+    </div>
+    <div class="guide-divider"></div>
+    <div class="guide-block">
+        <h3>🚇 市内交通</h3>
+        <p><strong>地铁：</strong>武汉地铁网络发达，目前已开通 12 条线路，覆盖主要景点和交通枢纽。推荐下载「Metro新时代」APP 扫码乘车。</p>
+        <p><strong>公交：</strong>票价 2 元，支持支付宝/微信扫码。BRT 快速公交连接武昌和汉口。</p>
+        <p><strong>轮渡：</strong>武汉特色交通方式，中华路码头至武汉关码头航线仅需 1.5 元，可欣赏两江四岸风光。</p>
+    </div>
+    <div class="guide-divider"></div>
+    <div class="guide-block">
+        <h3>🏨 住宿推荐</h3>
+        <p><strong>武昌区：</strong>靠近黄鹤楼、户部巷、武汉大学，文化氛围浓厚，适合学生和背包客。</p>
+        <p><strong>江汉路/汉口江滩：</strong>商业繁华，美食众多，交通便利，适合购物和夜生活爱好者。</p>
+    </div>
+</section>
+
+<!-- ===== 方言趣话 ===== -->
+<section class="section" id="dialect">
+    <h2 class="section-title">方言趣话</h2>
+    <div class="dialect-grid" id="dialectGrid"></div>
+</section>
+
+<!-- ===== 页脚 ===== -->
+<footer class="footer">
+    <p>© 2025 江城印象·武汉 | 探索城市之美</p>
+    <p>联系邮箱：hello@wuhan-city.com</p>
+</footer>
+
+<!-- ===== 模态窗 ===== -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modalContent">
+        <button class="modal-close" id="modalClose">&times;</button>
+        <div id="modalBody"></div>
+    </div>
+</div>
+
+<!-- ===== 复制提示 ===== -->
+<div class="copy-toast" id="copyToast">已复制</div>
+
+<script>
+    // ============================================================
+    // 1. 导航栏汉堡菜单
+    // ============================================================
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    navToggle.addEventListener('click', function() {
+        navLinks.classList.toggle('open');
+    });
+    // 点击导航链接后关闭菜单
+    navLinks.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+            navLinks.classList.remove('open');
+        });
+    });
+
+    // ============================================================
+    // 2. 历史数据
+    // ============================================================
+    const historyData = [
+        { year: '约3500年前', title: '盘龙城', desc: '武汉城市之根，位于黄陂区，是长江流域发现的夏商时期规模最大、出土文物最丰富的古城遗址，被誉为"武汉城市文明的摇篮"。', img: 'https://picsum.photos/seed/panlong/600/400' },
+        { year: '三国时期', title: '夏口与却月城', desc: '东汉末年，刘表部将黄祖在汉口筑却月城，孙权在武昌筑夏口城。赤壁之战后，武汉地区成为魏蜀吴三方争夺的战略要地。', img: 'https://picsum.photos/seed/xiakou/600/400' },
+        { year: '明朝', title: '武昌古城', desc: '明洪武年间，朱元璋扩建武昌城，设九门。武昌成为湖广布政使司驻地，是华中地区的政治、经济、文化中心。', img: 'https://picsum.photos/seed/wuchang/600/400' },
+        { year: '1861年', title: '汉口开埠', desc: '第二次鸦片战争后，汉口被辟为通商口岸。英、德、俄、法、日等国相继设立租界，汉口迅速成为国际性商埠，被誉为"东方芝加哥"。', img: 'https://picsum.photos/seed/hankou/600/400' },
+        { year: '1911年', title: '武昌起义', desc: '1911年10月10日，辛亥革命在武昌打响第一枪，推翻了清王朝统治，结束了中国两千多年的封建帝制。武昌红楼成为革命圣地。', img: 'https://picsum.photos/seed/wuchang-uprising/600/400' },
+        { year: '1957年', title: '武汉长江大桥', desc: '新中国第一座公铁两用长江大桥，连接武昌和汉阳，被誉为"万里长江第一桥"。毛泽东曾题词"一桥飞架南北，天堑变通途"。', img: 'https://picsum.photos/seed/bridge/600/400' },
+        { year: '2020年', title: '英雄之城抗疫', desc: '2020年初，武汉作为抗击新冠疫情的最前线，封城76天，展现了武汉人民坚韧不拔的英雄气概。武汉成为"英雄之城"的代名词。', img: 'https://picsum.photos/seed/wuhan-2020/600/400' }
+    ];
+
+    // ============================================================
+    // 3. 美食数据
+    // ============================================================
+    const foodData = [
+        { name: '热干面', brief: '武汉最具代表性的早餐，芝麻酱拌面香浓可口', detail: '武汉人"过早"的首选。碱水面煮熟后淋上芝麻酱、香油、葱花、萝卜丁，拌匀后香气扑鼻。', ingredients: '碱水面、芝麻酱、香油、葱花、萝卜丁、酱油', shop: '蔡林记（百年老字号）、李记热干面' },
+        { name: '豆皮', brief: '外皮金黄酥脆，内馅鲜香软糯', detail: '绿豆和大米磨浆摊成薄皮，包裹糯米、香菇、肉丁、笋丁等馅料，煎至两面金黄。', ingredients: '绿豆、大米、糯米、香菇、肉丁、笋丁', shop: '老通城豆皮（吉庆街店）' },
+        { name: '面窝', brief: '外酥里嫩的油炸米面圈', detail: '大米和黄豆磨浆，加入葱花、盐，用特制模具炸至金黄。中间薄脆、边缘厚实，口感层次丰富。', ingredients: '大米、黄豆、葱花、盐', shop: '户部巷各早点摊' },
+        { name: '鸭脖', brief: '麻辣鲜香，武汉人最爱的卤味零食', detail: '武汉精武路是鸭脖的发源地。用数十种香料卤制，麻辣入味，啃起来越吃越上瘾。', ingredients: '鸭脖、辣椒、花椒、八角、桂皮等卤料', shop: '周黑鸭、精武鸭脖' },
+        { name: '武昌鱼', brief: '毛主席赞誉的"才饮长沙水，又食武昌鱼"', detail: '武昌鱼学名团头鲂，产于梁子湖。清蒸最能体现其鲜嫩，肉质细嫩，味道鲜美。', ingredients: '武昌鱼、葱姜、蒸鱼豉油', shop: '大中华酒楼（武昌鱼老字号）' },
+        { name: '排骨藕汤', brief: '武汉人冬日暖心的家常汤品', detail: '选用湖北洪湖粉藕，与排骨一起文火慢炖数小时。藕块粉糯拉丝，汤色浓白，鲜香醇厚。', ingredients: '猪排骨、洪湖粉藕、姜、盐', shop: '武汉人家、湖锦酒楼' }
+    ];
+
+    // ============================================================
+    // 4. 地标数据
+    // ============================================================
+    const landmarkData = [
+        { name: '黄鹤楼', desc: '天下江山第一楼，江南三大名楼之一，登楼可俯瞰长江与武汉三镇。', img: 'https://picsum.photos/seed/huanghelou/800/450' },
+        { name: '东湖绿道', desc: '全长超百公里的城市绿道，串联东湖各景区，骑行漫步皆宜。', img: 'https://picsum.photos/seed/east-lake/800/450' },
+        { name: '武汉长江大桥', desc: '万里长江第一桥，公铁两用，步行过桥可感受长江的壮阔。', img: 'https://picsum.photos/seed/yangtze-bridge/800/450' },
+        { name: '户部巷', desc: '武汉最有名的"过早"一条街，汇集各种地道汉味小吃。', img: 'https://picsum.photos/seed/hubu-alley/800/450' },
+        { name: '古琴台', desc: '伯牙子期知音故事的发源地，中国十大古曲《高山流水》诞生于此。', img: 'https://picsum.photos/seed/guqintai/800/450' },
+        { name: '归元寺', desc: '武汉四大佛教丛林之一，以五百罗汉堂闻名，香火鼎盛。', img: 'https://picsum.photos/seed/guiyuan-temple/800/450' }
+    ];
+
+    // ============================================================
+    // 5. 名人数据
+    // ============================================================
+    const celebrityData = [
+        { name: '屈原', tag: '爱国诗人', brief: '战国时期楚国诗人，曾行吟东湖之畔，留下《离骚》《九歌》等不朽诗篇。', detail: '屈原（约前340—前278），芈姓屈氏，名平，字原。战国时期楚国诗人、政治家。相传他曾在武汉东湖一带行吟，后投汨罗江殉国。', img: 'https://picsum.photos/seed/quyuan/400/400' },
+        { name: '岳飞', tag: '抗金名将', brief: '南宋名将，驻军鄂州（今武昌）七年，写下千古名篇《满江红》。', detail: '岳飞（1103—1142），字鹏举，南宋抗金名将。驻军鄂州期间，他整军经武，写下"怒发冲冠，凭栏处、潇潇雨歇"的《满江红》。', img: 'https://picsum.photos/seed/yuefei/400/400' },
+        { name: '张之洞', tag: '晚清名臣', brief: '湖广总督，在武汉创办汉阳铁厂、自强学堂，推动近代化进程。', detail: '张之洞（1837—1909），字孝达，号香涛。任湖广总督18年，创办汉阳铁厂（亚洲第一座现代化钢铁企业）、自强学堂（武汉大学前身）等。', img: 'https://picsum.photos/seed/zhangzhidong/400/400' },
+        { name: '李四光', tag: '地质学家', brief: '中国地质力学创始人，在武汉主持地质工作，发现大庆油田。', detail: '李四光（1889—1971），字仲揆，湖北黄冈人。著名地质学家，创立地质力学理论，曾任武汉地质学院（现中国地质大学）教授。', img: 'https://picsum.photos/seed/lisiguang/400/400' },
+        { name: '朱一龙', tag: '演员', brief: '武汉籍知名演员，代表作《镇魂》《知否知否应是绿肥红瘦》。', detail: '朱一龙，1988年出生于湖北武汉，毕业于北京电影学院。凭借《镇魂》中沈巍一角走红，后出演《知否》《重启之极海听雷》等热剧。', img: 'https://picsum.photos/seed/zhuyilong/400/400' }
+    ];
+
+    // ============================================================
+    // 6. 方言数据
+    // ============================================================
+    const dialectData = [
+        { hanzi: '过早', pinyin: 'guò zǎo', meaning: '吃早餐。武汉人把吃早餐叫"过早"，可见对早餐的重视。' },
+        { hanzi: '蛮扎实', pinyin: 'mán zhā shí', meaning: '很厉害、很扎实。形容一个人能力强或东西质量好。' },
+        { hanzi: '7饭', pinyin: 'qī fàn', meaning: '吃饭。"7"是武汉话"吃"的谐音写法。' },
+        { hanzi: '拐子', pinyin: 'guǎi zi', meaning: '大哥、老兄。武汉人称呼年长男性或朋友的亲切叫法。' },
+        { hanzi: '冇得', pinyin: 'mǎo dé', meaning: '没有。"冇"是武汉话中"没有"的合音。' },
+        { hanzi: '灵醒', pinyin: 'líng xǐng', meaning: '聪明、机灵。也形容人穿戴整洁、精神。' }
+    ];
+
+    // ============================================================
+    // 7. 渲染历史时间线
+    // ============================================================
+    const timelineEl = document.getElementById('timeline');
+    const historyTitle = document.getElementById('historyTitle');
+    const historyDesc = document.getElementById('historyDesc');
+    const historyImg = document.getElementById('historyImg');
+
+    historyData.forEach(function(item, index) {
+        const div = document.createElement('div');
+        div.className = 'timeline-item' + (index === 0 ? ' active' : '');
+        div.dataset.index = index;
+        div.innerHTML = '<div class="year">' + item.year + '</div><div class="dot"></div><div class="label">' + item.title + '</div>';
+        div.addEventListener('click', function() {
+            document.querySelectorAll('.timeline-item').forEach(function(el) { el.classList.remove('active'); });
+            div.classList.add('active');
+            historyTitle.textContent = item.title + '（' + item.year + '）';
+            historyDesc.textContent = item.desc;
+            historyImg.src = item.img;
+            historyImg.alt = item.title;
+        });
+        timelineEl.appendChild(div);
+    });
+
+    // ============================================================
+    // 8. 渲染美食卡片
+    // ============================================================
+    const foodGrid = document.getElementById('foodGrid');
+    foodData.forEach(function(item) {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = '<img src="https://picsum.photos/seed/food-' + item.name + '/400/300" alt="' + item.name + '"><div class="card-body"><h3>' + item.name + '</h3><p>' + item.brief + '</p></div>';
+        card.addEventListener('click', function() {
+            openModal(
+                '<img src="https://picsum.photos/seed/food-' + item.name + '/600/400" alt="' + item.name + '">' +
+                '<h2>' + item.name + '</h2>' +
+                '<p><strong>详细介绍：</strong>' + item.detail + '</p>' +
+                '<p><strong>主要食材：</strong>' + item.ingredients + '</p>' +
+                '<p><strong>推荐店铺：</strong>' + item.shop + '</p>'
+            );
+        });
+        foodGrid.appendChild(card);
+    });
+
+    // ============================================================
+    // 9. 轮播图
+    // ============================================================
+    let currentSlide = 0;
+    let carouselTimer = null;
+    const carouselInner = document.getElementById('carouselInner');
+    const carouselDots = document.getElementById('carouselDots');
+    const landmarkName = document.getElementById('landmarkName');
+    const landmarkDesc = document.getElementById('landmarkDesc');
+
+    function renderCarousel() {
+        carouselInner.innerHTML = '';
+        carouselDots.innerHTML = '';
+        landmarkData.forEach(function(item, index) {
+            const slide = document.createElement('div');
+            slide.className = 'carousel-slide' + (index === 0 ? ' active' : '');
+            slide.innerHTML = '<img src="' + item.img + '" alt="' + item.name + '">';
+            carouselInner.appendChild(slide);
+
+            const dot = document.createElement('span');
+            dot.className = index === 0 ? 'active' : '';
+            dot.addEventListener('click', function() { goToSlide(index); });
+            carouselDots.appendChild(dot);
+        });
+        updateCaption(0);
+    }
+
+    function goToSlide(index) {
+        document.querySelectorAll('.carousel-slide').forEach(function(el, i) {
+            el.classList.toggle('active', i === index);
+        });
+        document.querySelectorAll('.carousel-dots span').forEach(function(el, i) {
+            el.classList.toggle('active', i === index);
+        });
+        currentSlide = index;
+        updateCaption(index);
+    }
+
+    function updateCaption(index) {
+        landmarkName.textContent = landmarkData[index].name;
+        landmarkDesc.textContent = landmarkData[index].desc;
+    }
+
+    function nextSlide() { goToSlide((currentSlide + 1) % landmarkData.length); }
+    function prevSlide() { goToSlide((currentSlide - 1 + landmarkData.length) % landmarkData.length); }
+
+    function startCarousel() {
+        stopCarousel();
+        carouselTimer = setInterval(nextSlide, 5000);
+    }
+    function stopCarousel() { if (carouselTimer) { clearInterval(carouselTimer); carouselTimer = null; } }
+
+    renderCarousel();
+    startCarousel();
+
+    document.getElementById('carouselNext').addEventListener('click', function() { nextSlide(); startCarousel(); });
+    document.getElementById('carouselPrev').addEventListener('click', function() { prevSlide(); startCarousel(); });
+
+    const carouselWrap = document.getElementById('carouselWrap');
+    carouselWrap.addEventListener('mouseenter', stopCarousel);
+    carouselWrap.addEventListener('mouseleave', startCarousel);
+
+    // ============================================================
+    // 10. 渲染名人卡片
+    // ============================================================
+    const celebrityGrid = document.getElementById('celebrityGrid');
+    celebrityData.forEach(function(item) {
+        const card = document.createElement('div');
+        card.className = 'card person-card';
+        card.innerHTML = '<img src="' + item.img + '" alt="' + item.name + '"><div class="card-body"><h3>' + item.name + '</h3><span class="tag">' + item.tag + '</span><p>' + item.brief + '</p></div>';
+        card.addEventListener('click', function() {
+            openModal(
+                '<img src="' + item.img + '" alt="' + item.name + '">' +
+                '<h2>' + item.name + ' <span class="tag">' + item.tag + '</span></h2>' +
+                '<p>' + item.detail + '</p>'
+            );
+        });
+        celebrityGrid.appendChild(card);
+    });
+
+    // ============================================================
+    // 11. 渲染方言卡片
+    // ============================================================
+    const dialectGrid = document.getElementById('dialectGrid');
+    const copyToast = document.getElementById('copyToast');
+    let copyTimer = null;
+
+    dialectData.forEach(function(item) {
+        const card = document.createElement('div');
+        card.className = 'dialect-card';
+        card.innerHTML = '<div class="hanzi">' + item.hanzi + '</div><div class="pinyin">' + item.pinyin + '</div><div class="meaning">' + item.meaning + '</div>';
+        card.addEventListener('click', function() {
+            navigator.clipboard.writeText(item.hanzi + '（' + item.meaning + '）').then(function() {
+                copyToast.classList.add('show');
+                if (copyTimer) clearTimeout(copyTimer);
+                copyTimer = setTimeout(function() { copyToast.classList.remove('show'); }, 1500);
+            }).catch(function() {
+                // fallback
+                copyToast.textContent = '复制失败，请手动复制';
+                copyToast.classList.add('show');
+                setTimeout(function() { copyToast.classList.remove('show'); }, 2000);
+            });
+        });
+        dialectGrid.appendChild(card);
+    });
+
+    // ============================================================
+    // 12. 模态窗
+    // ============================================================
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalBody = document.getElementById('modalBody');
+    const modalClose = document.getElementById('modalClose');
+
+    function openModal(html) {
+        modalBody.innerHTML = html;
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        modalOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', function(e) {
+        if (e.target === modalOverlay) closeModal();
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
+</script>
+</body>
+</html>
