@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>武汉理工大学 - 校园导览</title>
+  <style>
+    /* ===== 全局重置 & 基础 ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+      color: #333; background: #f8f9fa; line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; height: auto; display: block; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* ===== 顶部导航 ===== */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(0, 48, 105, 0.95); backdrop-filter: blur(8px);
+      padding: 0 20px; height: 60px; display: flex; align-items: center; justify-content: space-between;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .navbar .logo { color: #fff; font-size: 20px; font-weight: 700; letter-spacing: 1px; }
+    .navbar .logo span { color: #8ab4f8; }
+    .nav-links { display: flex; list-style: none; gap: 28px; }
+    .nav-links a {
+      color: rgba(255,255,255,0.85); font-size: 15px; font-weight: 500;
+      transition: color 0.2s; padding: 4px 0; border-bottom: 2px solid transparent;
+    }
+    .nav-links a:hover { color: #fff; border-bottom-color: #8ab4f8; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 26px; height: 3px; background: #fff; border-radius: 2px; transition: 0.3s; }
+
+    /* ===== 背景头图 ===== */
+    .hero {
+      margin-top: 60px; position: relative; height: 70vh; min-height: 400px;
+      background: url('https://picsum.photos/1600/900?random=1') center/cover no-repeat;
+      display: flex; align-items: center; justify-content: center; text-align: center;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,48,105,0.7), rgba(0,30,70,0.5));
+    }
+    .hero-content { position: relative; z-index: 1; color: #fff; padding: 20px; }
+    .hero-content h1 { font-size: 52px; font-weight: 800; letter-spacing: 4px; margin-bottom: 8px; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+    .hero-content .subtitle { font-size: 22px; font-weight: 300; letter-spacing: 6px; opacity: 0.95; }
+    .hero-content .motto { margin-top: 16px; font-size: 18px; font-weight: 500; opacity: 0.9; letter-spacing: 3px; }
+
+    /* ===== 通用区域 ===== */
+    .section { padding: 70px 0; }
+    .section-title {
+      text-align: center; font-size: 30px; font-weight: 700; color: #003069;
+      margin-bottom: 12px; letter-spacing: 2px;
+    }
+    .section-divider {
+      width: 60px; height: 3px; background: #003069; margin: 0 auto 40px; border-radius: 2px;
+    }
+    .section-subtitle { text-align: center; color: #666; font-size: 15px; margin-bottom: 40px; }
+
+    /* ===== 学校概况 ===== */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+    .about-text p { margin-bottom: 16px; font-size: 15px; color: #444; text-indent: 2em; }
+    .about-text .info-list { list-style: none; margin-top: 12px; }
+    .about-text .info-list li {
+      padding: 6px 0; font-size: 14px; color: #555; border-bottom: 1px dashed #e0e0e0;
+    }
+    .about-text .info-list li strong { color: #003069; }
+    .about-img { border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+
+    /* ===== 校园风光轮播 ===== */
+    .gallery-wrap { position: relative; max-width: 900px; margin: 0 auto; }
+    .gallery-slider { overflow: hidden; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    .gallery-track {
+      display: flex; transition: transform 0.5s ease;
+    }
+    .gallery-slide { min-width: 100%; position: relative; }
+    .gallery-slide img { width: 100%; height: 450px; object-fit: cover; }
+    .gallery-slide .caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      color: #fff; padding: 30px 20px 16px; font-size: 16px; font-weight: 500; text-align: center;
+    }
+    .gallery-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 44px; height: 44px; border-radius: 50%; border: none;
+      background: rgba(255,255,255,0.85); color: #003069; font-size: 22px;
+      cursor: pointer; transition: 0.2s; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .gallery-btn:hover { background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+    .gallery-btn.prev { left: -22px; }
+    .gallery-btn.next { right: -22px; }
+    .gallery-dots {
+      display: flex; justify-content: center; gap: 10px; margin-top: 16px;
+    }
+    .gallery-dots .dot {
+      width: 12px; height: 12px; border-radius: 50%; border: 2px solid #003069;
+      background: transparent; cursor: pointer; transition: 0.3s;
+    }
+    .gallery-dots .dot.active { background: #003069; }
+
+    /* ===== 校园活动 ===== */
+    .activity-section { background: #fff; }
+    .activity-scroll-wrap { position: relative; }
+    .activity-scroll {
+      display: flex; gap: 20px; overflow-x: auto; padding: 10px 4px 20px;
+      scroll-behavior: smooth; scrollbar-width: none;
+    }
+    .activity-scroll::-webkit-scrollbar { display: none; }
+    .activity-card {
+      flex: 0 0 280px; border-radius: 12px; overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08); background: #fff;
+      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+      border: 1px solid #eee;
+    }
+    .activity-card:hover { transform: translateY(-4px); box-shadow: 0 6px 24px rgba(0,0,0,0.12); }
+    .activity-card img { width: 100%; height: 180px; object-fit: cover; }
+    .activity-card .info { padding: 14px 16px 16px; }
+    .activity-card .info h3 { font-size: 16px; font-weight: 600; color: #003069; margin-bottom: 6px; }
+    .activity-card .info .time { font-size: 13px; color: #888; }
+    .activity-scroll-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 40px; height: 40px; border-radius: 50%; border: none;
+      background: #003069; color: #fff; font-size: 20px;
+      cursor: pointer; z-index: 2; transition: 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .activity-scroll-btn:hover { background: #004a9e; }
+    .activity-scroll-btn.left { left: -16px; }
+    .activity-scroll-btn.right { right: -16px; }
+    .btn-add-activity {
+      display: block; margin: 20px auto 0; padding: 10px 28px;
+      background: #003069; color: #fff; border: none; border-radius: 8px;
+      font-size: 15px; cursor: pointer; transition: 0.2s;
+    }
+    .btn-add-activity:hover { background: #004a9e; }
+
+    /* ===== 弹窗 ===== */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: #fff; border-radius: 16px; max-width: 560px; width: 100%;
+      max-height: 85vh; overflow-y: auto; padding: 32px; position: relative;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2); animation: modalIn 0.25s ease;
+    }
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.92) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .modal-close {
+      position: absolute; top: 14px; right: 18px; font-size: 28px;
+      background: none; border: none; cursor: pointer; color: #999; line-height: 1;
+      transition: 0.2s;
+    }
+    .modal-close:hover { color: #333; }
+    .modal-box img { width: 100%; border-radius: 10px; margin-bottom: 16px; max-height: 260px; object-fit: cover; }
+    .modal-box h2 { font-size: 22px; color: #003069; margin-bottom: 8px; }
+    .modal-box .meta { font-size: 14px; color: #888; margin-bottom: 12px; }
+    .modal-box .meta span { margin-right: 16px; }
+    .modal-box .desc { font-size: 15px; color: #444; line-height: 1.8; }
+
+    /* ===== 发布活动表单弹窗 ===== */
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 14px; font-weight: 600; color: #333; margin-bottom: 4px; }
+    .form-group input, .form-group textarea {
+      width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px;
+      font-size: 14px; font-family: inherit; transition: 0.2s; background: #fff; color: #333;
+    }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #003069; box-shadow: 0 0 0 3px rgba(0,48,105,0.1); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    .btn-submit {
+      padding: 10px 32px; background: #003069; color: #fff; border: none;
+      border-radius: 8px; font-size: 15px; cursor: pointer; transition: 0.2s;
+    }
+    .btn-submit:hover { background: #004a9e; }
+
+    /* ===== 成功提示 ===== */
+    .toast {
+      position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 3000;
+      background: #003069; color: #fff; padding: 14px 32px; border-radius: 10px;
+      font-size: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      opacity: 0; transition: opacity 0.4s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; }
+
+    /* ===== 院系展示 ===== */
+    .dept-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .dept-card {
+      background: #fff; border-radius: 12px; padding: 24px 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06); border: 1px solid #eee;
+      transition: 0.2s;
+    }
+    .dept-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .dept-card h3 { font-size: 17px; color: #003069; margin-bottom: 8px; }
+    .dept-card p { font-size: 14px; color: #666; line-height: 1.7; }
+
+    /* ===== 底部 ===== */
+    .footer {
+      background: #002244; color: rgba(255,255,255,0.8); padding: 40px 0 30px;
+      text-align: center;
+    }
+    .footer .social-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 16px; flex-wrap: wrap; }
+    .footer .social-links a {
+      color: rgba(255,255,255,0.7); font-size: 14px; transition: 0.2s;
+      padding: 6px 14px; border-radius: 6px; background: rgba(255,255,255,0.06);
+    }
+    .footer .social-links a:hover { color: #fff; background: rgba(255,255,255,0.12); }
+    .footer .contact-info { font-size: 14px; line-height: 2; margin-bottom: 12px; }
+    .footer .copyright { font-size: 13px; opacity: 0.6; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; margin-top: 16px; }
+
+    /* ===== 响应式 ===== */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none; position: absolute; top: 60px; left: 0; right: 0;
+        background: rgba(0,48,105,0.98); flex-direction: column; padding: 16px 20px; gap: 0;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { display: block; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .hamburger { display: flex; }
+      .hero { height: 55vh; min-height: 320px; }
+      .hero-content h1 { font-size: 32px; }
+      .hero-content .subtitle { font-size: 16px; letter-spacing: 3px; }
+      .about-grid { grid-template-columns: 1fr; }
+      .gallery-slide img { height: 280px; }
+      .gallery-btn { width: 36px; height: 36px; font-size: 18px; }
+      .gallery-btn.prev { left: -10px; }
+      .gallery-btn.next { right: -10px; }
+      .activity-card { flex: 0 0 240px; }
+      .activity-scroll-btn { display: none; }
+      .section { padding: 50px 0; }
+      .section-title { font-size: 24px; }
+      .modal-box { padding: 24px 20px; }
+    }
+    @media (max-width: 480px) {
+      .hero-content h1 { font-size: 26px; }
+      .hero-content .subtitle { font-size: 14px; }
+      .activity-card { flex: 0 0 200px; }
+      .activity-card img { height: 140px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== 顶部导航 ===== -->
+  <nav class="navbar">
+    <div class="logo">武汉<span>理工</span></div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">学校概况</a></li>
+      <li><a href="#gallery">校园风光</a></li>
+      <li><a href="#activities">活动入口</a></li>
+      <li><a href="#departments">院系展示</a></li>
+      <li><a href="#footer">联系我们</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- ===== 背景头图 ===== -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>武汉理工</h1>
+      <div class="subtitle">Wuhan University of Technology</div>
+      <div class="motto">厚德博学 · 追求卓越</div>
+    </div>
+  </section>
+
+  <!-- ===== 学校概况 ===== -->
+  <section class="section" id="about">
+    <div class="container">
+      <h2 class="section-title">学校概况</h2>
+      <div class="section-divider"></div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>武汉理工大学是教育部直属全国重点大学，首批列入国家"211工程"和"双一流"建设高校。学校由原武汉工业大学、武汉交通科技大学、武汉汽车工业大学于2000年合并组建而成，办学历史可追溯至1898年成立的湖北工艺学堂。</p>
+          <p>学校以工学为主，理、工、经、管、文、法、艺等多学科协调发展，在材料科学与工程、船舶与海洋工程、交通运输工程、机械工程等领域具有显著优势。学校现有马房山、余家头和南湖三个校区，占地近4000亩。</p>
+          <p>南湖图书馆作为校园新地标，以其现代设计成为学子们最爱的学习空间；水上图书馆依水而建，环境优雅；飞马广场则是校园文化活动的核心地带，承载着无数理工学子的青春记忆。</p>
+          <ul class="info-list" id="schoolInfo"></ul>
+        </div>
+        <div class="about-img">
+          <img src="https://picsum.photos/800/500?random=2" alt="武汉理工大学校园风景">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 校园风光轮播 ===== -->
+  <section class="section" id="gallery" style="background:#f0f4f8;">
+    <div class="container">
+      <h2 class="section-title">校园风光</h2>
+      <div class="section-divider"></div>
+      <p class="section-subtitle">漫步校园，感受四季之美</p>
+      <div class="gallery-wrap">
+        <div class="gallery-slider">
+          <div class="gallery-track" id="galleryTrack"></div>
+        </div>
+        <button class="gallery-btn prev" id="galleryPrev">‹</button>
+        <button class="gallery-btn next" id="galleryNext">›</button>
+        <div class="gallery-dots" id="galleryDots"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 校园活动 ===== -->
+  <section class="section activity-section" id="activities">
+    <div class="container">
+      <h2 class="section-title">校园活动</h2>
+      <div class="section-divider"></div>
+      <p class="section-subtitle">精彩活动，等你参与</p>
+      <div class="activity-scroll-wrap">
+        <button class="activity-scroll-btn left" id="actScrollLeft">‹</button>
+        <div class="activity-scroll" id="activityScroll"></div>
+        <button class="activity-scroll-btn right" id="actScrollRight">›</button>
+      </div>
+      <button class="btn-add-activity" id="btnAddActivity">+ 发布新活动</button>
+    </div>
+  </section>
+
+  <!-- ===== 院系展示 ===== -->
+  <section class="section" id="departments">
+    <div class="container">
+      <h2 class="section-title">院系展示</h2>
+      <div class="section-divider"></div>
+      <p class="section-subtitle">多学科协调发展，特色鲜明</p>
+      <div class="dept-grid" id="deptGrid"></div>
+    </div>
+  </section>
+
+  <!-- ===== 底部 ===== -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="social-links">
+        <a href="#">📱 微信公众号</a>
+        <a href="#">📱 官方微博</a>
+        <a href="#">📱 抖音号</a>
+        <a href="#">📱 B站账号</a>
+      </div>
+      <div class="contact-info">
+        地址：湖北省武汉市洪山区珞狮路122号 &nbsp;|&nbsp; 邮编：430070<br>
+        招生咨询：027-87859017 &nbsp;|&nbsp; 学校总机：027-87651428<br>
+        邮箱：webmaster@whut.edu.cn
+      </div>
+      <div class="copyright">© 2025 武汉理工大学 版权所有</div>
+    </div>
+  </footer>
+
+  <!-- ===== 活动详情弹窗 ===== -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-box">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <img id="modalImg" src="" alt="活动海报">
+      <h2 id="modalTitle"></h2>
+      <div class="meta">
+        <span id="modalTime"></span>
+        <span id="modalLocation"></span>
+        <span id="modalOrganizer"></span>
+      </div>
+      <div class="desc" id="modalDesc"></div>
+    </div>
+  </div>
+
+  <!-- ===== 发布活动弹窗 ===== -->
+  <div class="modal-overlay" id="formModal">
+    <div class="modal-box">
+      <button class="modal-close" id="formModalClose">&times;</button>
+      <h2 style="color:#003069;margin-bottom:16px;">发布新活动</h2>
+      <form id="activityForm">
+        <div class="form-group">
+          <label for="fName">活动名称 *</label>
+          <input type="text" id="fName" required>
+        </div>
+        <div class="form-group">
+          <label for="fTime">举办时间 *</label>
+          <input type="text" id="fTime" placeholder="例如：2025年6月15日" required>
+        </div>
+        <div class="form-group">
+          <label for="fLocation">活动地点 *</label>
+          <input type="text" id="fLocation" required>
+        </div>
+        <div class="form-group">
+          <label for="fOrganizer">主办单位</label>
+          <input type="text" id="fOrganizer" placeholder="例如：校学生会">
+        </div>
+        <div class="form-group">
+          <label for="fPoster">海报图片链接</label>
+          <input type="url" id="fPoster" placeholder="https://picsum.photos/...">
+        </div>
+        <div class="form-group">
+          <label for="fDesc">活动详情 *</label>
+          <textarea id="fDesc" required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">提交发布</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== 成功提示 ===== -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    /* ============================================================
+       数据定义
+       ============================================================ */
+    const STORAGE_KEY = 'whut_site_data';
+
+    const defaultData = {
+      school: {
+        name: '武汉理工大学',
+        motto: '厚德博学，追求卓越',
+        founded: '2000年（合并组建）',
+        history: '1898年',
+        president: '杨宗凯',
+        campuses: '马房山校区、余家头校区、南湖校区',
+        disciplines: '以工学为主，理、工、经、管、文、法、艺多学科协调发展'
+      },
+      gallery: [
+        { name: '南湖图书馆', url: 'https://picsum.photos/900/500?random=10' },
+        { name: '水上图书馆', url: 'https://picsum.photos/900/500?random=11' },
+        { name: '飞马广场', url: 'https://picsum.photos/900/500?random=12' },
+        { name: '校园樱花大道', url: 'https://picsum.photos/900/500?random=13' },
+        { name: '博学广场', url: 'https://picsum.photos/900/500?random=14' }
+      ],
+      activities: [
+        {
+          id: 1, name: '校园开放日', time: '2025年6月22日',
+          location: '南湖校区·博学广场', organizer: '学校招生办公室',
+          poster: 'https://picsum.photos/400/250?random=20',
+          desc: '武汉理工大学2025年校园开放日来啦！届时各学院将设立咨询展位，为考生和家长提供面对面咨询服务。同时开放南湖图书馆、国家重点实验室等场所供参观，还有学生社团精彩展演，欢迎广大考生和家长前来体验。'
+        },
+        {
+          id: 2, name: '理工杯创新创业大赛', time: '2025年7月5日-7月20日',
+          location: '创新创业园·路演大厅', organizer: '校团委、教务处',
+          poster: 'https://picsum.photos/400/250?random=21',
+          desc: '一年一度的"理工杯"创新创业大赛正式启动！大赛设科技创新、文化创意、公益创业三个赛道，获奖团队将获得创业孵化支持及奖金。欢迎全校师生踊跃报名，用创意点亮未来。'
+        },
+        {
+          id: 3, name: '材料科学前沿论坛', time: '2025年6月28日',
+          location: '会议中心·301报告厅', organizer: '材料科学与工程学院',
+          poster: 'https://picsum.photos/400/250?random=22',
+          desc: '本次论坛邀请到国内外材料科学领域的知名学者，围绕新能源材料、纳米材料、生物材料等前沿方向展开学术交流。欢迎相关专业师生参加。'
+        },
+        {
+          id: 4, name: '校园马拉松', time: '2025年9月16日',
+          location: '南湖校区环校跑道', organizer: '体育部、校工会',
+          poster: 'https://picsum.photos/400/250?random=23',
+          desc: '武汉理工大学第五届校园马拉松即将开跑！设5公里健康跑和10公里竞速跑两个项目，沿途经过南湖图书馆、飞马广场等校园地标。完赛选手将获得定制奖牌。'
+        },
+        {
+          id: 5, name: '社团文化节', time: '2025年10月12日-10月14日',
+          location: '飞马广场', organizer: '学生社团联合会',
+          poster: 'https://picsum.photos/400/250?random=24',
+          desc: '百余个学生社团齐聚飞马广场，带来精彩表演、互动体验和创意市集。从科技创新到传统文化，从音乐舞蹈到公益实践，总有一个社团让你心动。'
+        }
+      ],
+      departments: [
+        { name: '材料科学与工程学院', intro: '拥有材料科学与工程国家重点学科，在无机非金属材料、复合材料等领域享有盛誉，建有材料复合新技术国家重点实验室。' },
+        { name: '交通与物流工程学院', intro: '聚焦交通运输工程、物流工程等领域，在智能交通、港口物流方向具有突出优势，承担多项国家重大科研项目。' },
+        { name: '汽车工程学院', intro: '以车辆工程为核心，覆盖新能源汽车、智能网联汽车等前沿方向，与多家车企建有联合实验室。' },
+        { name: '机电工程学院', intro: '涵盖机械工程、仪器科学与技术等学科，在智能制造、机器人技术领域成果丰硕。' },
+        { name: '计算机科学与技术学院', intro: '拥有计算机科学与技术、软件工程等专业，在人工智能、大数据、物联网方向特色鲜明。' },
+        { name: '土木工程与建筑学院', intro: '涵盖土木工程、建筑学等专业，在结构工程、岩土工程、绿色建筑方向实力雄厚。' }
+      ]
+    };
+
+    /* ============================================================
+       数据管理（localStorage）
+       ============================================================ */
+    function loadData() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try { return JSON.parse(stored); } catch(e) { /* fallback */ }
+      }
+      saveData(defaultData);
+      return JSON.parse(JSON.stringify(defaultData));
+    }
+
+    function saveData(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    let appData = loadData();
+
+    /* ============================================================
+       渲染：学校概况信息列表
+       ============================================================ */
+    function renderSchoolInfo() {
+      const s = appData.school;
+      const list = document.getElementById('schoolInfo');
+      list.innerHTML = `
+        <li><strong>校训：</strong>${s.motto}</li>
+        <li><strong>合并组建：</strong>${s.founded}</li>
+        <li><strong>办学历史：</strong>${s.history}</li>
+        <li><strong>现任校长：</strong>${s.president}</li>
+        <li><strong>校区分布：</strong>${s.campuses}</li>
+        <li><strong>学科特色：</strong>${s.disciplines}</li>
+      `;
+    }
+
+    /* ============================================================
+       渲染：校园风光轮播
+       ============================================================ */
+    let galleryIndex = 0;
+    let galleryTimer = null;
+
+    function renderGallery() {
+      const track = document.getElementById('galleryTrack');
+      const dots = document.getElementById('galleryDots');
+      track.innerHTML = appData.gallery.map(item => `
+        <div class="gallery-slide">
+          <img src="${item.url}" alt="${item.name}" loading="lazy">
+          <div class="caption">${item.name}</div>
+        </div>
+      `).join('');
+      dots.innerHTML = appData.gallery.map((_, i) =>
+        `<span class="dot${i === 0 ? ' active' : ''}" data-index="${i}"></span>`
+      ).join('');
+      updateGallery();
+    }
+
+    function updateGallery() {
+      const track = document.getElementById('galleryTrack');
+      const dots = document.querySelectorAll('.gallery-dots .dot');
+      track.style.transform = `translateX(-${galleryIndex * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === galleryIndex));
+    }
+
+    function goGallery(dir) {
+      const total = appData.gallery.length;
+      galleryIndex = (galleryIndex + dir + total) % total;
+      updateGallery();
+      resetGalleryTimer();
+    }
+
+    function goGalleryTo(index) {
+      galleryIndex = index;
+      updateGallery();
+      resetGalleryTimer();
+    }
+
+    function resetGalleryTimer() {
+      if (galleryTimer) clearInterval(galleryTimer);
+      galleryTimer = setInterval(() => goGallery(1), 4000);
+    }
+
+    /* ============================================================
+       渲染：校园活动
+       ============================================================ */
+    function renderActivities() {
+      const container = document.getElementById('activityScroll');
+      container.innerHTML = appData.activities.map(act => `
+        <div class="activity-card" data-id="${act.id}">
+          <img src="${act.poster}" alt="${act.name}" loading="lazy">
+          <div class="info">
+            <h3>${act.name}</h3>
+            <div class="time">📅 ${act.time}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    /* ============================================================
+       渲染：院系展示
+       ============================================================ */
+    function renderDepartments() {
+      const grid = document.getElementById('deptGrid');
+      grid.innerHTML = appData.departments.map(dept => `
+        <div class="dept-card">
+          <h3>${dept.name}</h3>
+          <p>${dept.intro}</p>
+        </div>
+      `).join('');
+    }
+
+    /* ============================================================
+       弹窗：活动详情
+       ============================================================ */
+    function showDetail(actId) {
+      const act = appData.activities.find(a => a.id === actId);
+      if (!act) return;
+      document.getElementById('modalImg').src = act.poster;
+      document.getElementById('modalImg').alt = act.name;
+      document.getElementById('modalTitle').textContent = act.name;
+      document.getElementById('modalTime').textContent = '📅 ' + act.time;
+      document.getElementById('modalLocation').textContent = '📍 ' + act.location;
+      document.getElementById('modalOrganizer').textContent = '🏛 ' + act.organizer;
+      document.getElementById('modalDesc').textContent = act.desc;
+      document.getElementById('detailModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDetail() {
+      document.getElementById('detailModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    /* ============================================================
+       弹窗：发布活动表单
+       ============================================================ */
+    function openFormModal() {
+      document.getElementById('formModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeFormModal() {
+      document.getElementById('formModal').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    /* ============================================================
+       Toast 提示
+       ============================================================ */
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+    }
+
+    /* ============================================================
+       初始化 & 事件绑定
+       ============================================================ */
+    document.addEventListener('DOMContentLoaded', function() {
+      // 渲染数据
+      renderSchoolInfo();
+      renderGallery();
+      renderActivities();
+      renderDepartments();
+
+      // ===== 汉堡菜单 =====
+      const hamburger = document.getElementById('hamburger');
+      const navLinks = document.getElementById('navLinks');
+      hamburger.addEventListener('click', function() {
+        navLinks.classList.toggle('open');
+      });
+      // 点击导航链接后关闭菜单
+      navLinks.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => navLinks.classList.remove('open'));
+      });
+
+      // ===== 轮播控制 =====
+      document.getElementById('galleryPrev').addEventListener('click', () => goGallery(-1));
+      document.getElementById('galleryNext').addEventListener('click', () => goGallery(1));
+      document.getElementById('galleryDots').addEventListener('click', function(e) {
+        if (e.target.classList.contains('dot')) {
+          goGalleryTo(parseInt(e.target.dataset.index));
+        }
+      });
+      resetGalleryTimer();
+
+      // ===== 活动横向滚动 =====
+      const scrollContainer = document.getElementById('activityScroll');
+      document.getElementById('actScrollLeft').addEventListener('click', () => {
+        scrollContainer.scrollBy({ left: -300, behavior: 'smooth' });
+      });
+      document.getElementById('actScrollRight').addEventListener('click', () => {
+        scrollContainer.scrollBy({ left: 300, behavior: 'smooth' });
+      });
+
+      // ===== 活动卡片点击 =====
+      scrollContainer.addEventListener('click', function(e) {
+        const card = e.target.closest('.activity-card');
+        if (card) {
+          showDetail(parseInt(card.dataset.id));
+        }
+      });
+
+      // ===== 详情弹窗关闭 =====
+      document.getElementById('modalClose').addEventListener('click', closeDetail);
+      document.getElementById('detailModal').addEventListener('click', function(e) {
+        if (e.target === this) closeDetail();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeDetail();
+          closeFormModal();
+        }
+      });
+
+      // ===== 发布活动 =====
+      document.getElementById('btnAddActivity').addEventListener('click', openFormModal);
+      document.getElementById('formModalClose').addEventListener('click', closeFormModal);
+      document.getElementById('formModal').addEventListener('click', function(e) {
+        if (e.target === this) closeFormModal();
+      });
+
+      // ===== 表单提交 =====
+      document.getElementById('activityForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('fName').value.trim();
+        const time = document.getElementById('fTime').value.trim();
+        const location = document.getElementById('fLocation').value.trim();
+        const organizer = document.getElementById('fOrganizer').value.trim() || '未知';
+        const poster = document.getElementById('fPoster').value.trim() || 'https://picsum.photos/400/250?random=' + Date.now();
+        const desc = document.getElementById('fDesc').value.trim();
+        if (!name || !time || !location || !desc) {
+          showToast('请填写完整信息');
+          return;
+        }
+        const newAct = {
+          id: Date.now(),
+          name, time, location, organizer, poster, desc
+        };
+        appData.activities.push(newAct);
+        saveData(appData);
+        renderActivities();
+        closeFormModal();
+        this.reset();
+        showToast('🎉 活动发布成功！');
+      });
+    });
+  </script>
+</body>
+</html>
