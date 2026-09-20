@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>武汉理工 · 学校名片</title>
+  <meta name="description" content="武汉理工官方介绍：历史底蕴、学科实力、校园风光、新闻动态与招生咨询。">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ 顶部导航栏 ============ -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <a href="#hero" class="brand" data-scroll>
+        <span class="brand-icon" aria-hidden="true">武</span>
+        <span class="brand-name">武汉理工</span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="#overview" class="nav-link" data-scroll>学校概况</a>
+        <a href="#strength" class="nav-link" data-scroll>学科实力</a>
+        <a href="#gallery" class="nav-link" data-scroll>校园风光</a>
+        <a href="#news" class="nav-link" data-scroll>新闻动态</a>
+        <a href="#contact" class="nav-link" data-scroll>招生咨询</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============ 首屏横幅 ============ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg" style="background-image:url('https://picsum.photos/id/1076/1600/900')"></div>
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+      <h1 class="hero-title">欢迎来到武汉理工</h1>
+      <p class="hero-subtitle">厚德博学，追求卓越 —— 一所特色鲜明的世界一流学科建设高校</p>
+      <div class="hero-actions">
+        <a href="#overview" class="btn btn-primary" data-scroll>了解学校</a>
+        <a href="#contact" class="btn btn-outline" data-scroll>招生咨询</a>
+      </div>
+    </div>
+
+    <!-- 校景轮播 -->
+    <div class="carousel" id="carousel">
+      <div class="carousel-track" id="carouselTrack">
+        <!-- 由 JS 渲染 -->
+      </div>
+      <div class="carousel-dots" id="carouselDots"></div>
+    </div>
+  </section>
+
+  <!-- ============ 学校概况 ============ -->
+  <section class="section" id="overview">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">学校概况</h2>
+        <p class="section-desc">三校合并，薪火相传，扎根荆楚大地办大学</p>
+      </div>
+
+      <div class="overview-grid">
+        <div class="overview-media">
+          <img src="https://picsum.photos/id/1039/800/600" alt="武汉理工校园">
+        </div>
+        <div class="overview-text">
+          <p>武汉理工是教育部直属的全国重点大学，是首批列入国家"211工程"和"双一流"建设的高校。学校于2000年由原武汉工业大学、武汉交通科技大学、武汉汽车工业大学三校合并组建而成，办学历史可追溯至1898年。</p>
+          <p>学校以工学为主，理、工、经、管、艺、文、法等多学科协调发展，在材料、交通、汽车三大行业领域形成了鲜明的办学特色，被誉为"三大行业高层次人才培养和科技创新的重要基地"。</p>
+          <div class="tags">
+            <span class="tag">211工程</span>
+            <span class="tag">双一流</span>
+            <span class="tag">教育部直属</span>
+            <span class="tag">行业特色鲜明</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 数据统计带 ============ -->
+  <section class="stats" id="stats">
+    <div class="container stats-grid">
+      <div class="stat-item">
+        <div class="stat-num" data-target="1898" data-suffix="">0</div>
+        <div class="stat-label">办学历史起点</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="25" data-suffix="个">0</div>
+        <div class="stat-label">学院（部）</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="60000" data-suffix="+">0</div>
+        <div class="stat-label">在校学生</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="5500" data-suffix="+">0</div>
+        <div class="stat-label">专任教师</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="4" data-suffix="个">0</div>
+        <div class="stat-label">国家重点实验室</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 学科实力 ============ -->
+  <section class="section" id="strength">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">学科实力</h2>
+        <p class="section-desc">优势学科与特色学院，点击卡片查看详细介绍</p>
+      </div>
+
+      <div class="filters" id="filters">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="理工类">理工类</button>
+        <button class="filter-btn" data-filter="人文社科">人文社科</button>
+        <button class="filter-btn" data-filter="交叉学科">交叉学科</button>
+      </div>
+
+      <div class="card-grid" id="cardGrid">
+        <!-- 由 JS 渲染 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 校园风光 ============ -->
+  <section class="section section-alt" id="gallery">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">校园风光</h2>
+        <p class="section-desc">点击图片可放大查看，支持左右切换</p>
+      </div>
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- 由 JS 渲染 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 新闻动态 ============ -->
+  <section class="section" id="news">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">新闻动态</h2>
+        <p class="section-desc">了解学校最新发展与校园资讯</p>
+      </div>
+      <div class="news-list" id="newsList">
+        <!-- 由 JS 渲染 -->
+      </div>
+      <div class="news-more">
+        <button class="btn btn-primary" id="loadMoreBtn">加载更多</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 招生咨询 ============ -->
+  <section class="section section-alt" id="contact">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="section-title">招生咨询</h2>
+        <p class="section-desc">留下您的信息，招生老师会尽快与您联系</p>
+      </div>
+
+      <div class="contact-grid">
+        <!-- 左侧说明 -->
+        <div class="contact-info">
+          <p>无论您是正在备考的高中生、关心孩子未来的家长，还是准备考研的同学、心系母校的校友，都欢迎通过以下方式与我们取得联系。</p>
+          <ul class="contact-list">
+            <li><span class="ci-label">咨询电话</span><span class="ci-value">027-8765-1234</span></li>
+            <li><span class="ci-label">电子邮箱</span><span class="ci-value">admission@whut.edu.cn</span></li>
+            <li><span class="ci-label">学校地址</span><span class="ci-value">湖北省武汉市洪山区珞狮路122号</span></li>
+          </ul>
+        </div>
+
+        <!-- 右侧表单 -->
+        <div class="contact-form-wrap">
+          <form class="contact-form" id="contactForm" novalidate>
+            <div class="form-row">
+              <label for="fName">姓名 <span class="req">*</span></label>
+              <input type="text" id="fName" name="name" placeholder="请输入您的姓名">
+              <p class="field-error" data-error-for="fName"></p>
+            </div>
+
+            <div class="form-row">
+              <label for="fPhone">手机号 <span class="req">*</span></label>
+              <input type="tel" id="fPhone" name="phone" placeholder="请输入11位手机号">
+              <p class="field-error" data-error-for="fPhone"></p>
+            </div>
+
+            <div class="form-row">
+              <label for="fRole">身份</label>
+              <select id="fRole" name="role">
+                <option value="高中生">高中生</option>
+                <option value="家长">家长</option>
+                <option value="考研学生">考研学生</option>
+                <option value="校友">校友</option>
+                <option value="其他">其他</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <label for="fDept">想咨询的学院</label>
+              <select id="fDept" name="dept">
+                <!-- 由 JS 渲染 -->
+              </select>
+            </div>
+
+            <div class="form-row">
+              <label for="fMessage">留言内容 <span class="req">*</span></label>
+              <textarea id="fMessage" name="message" rows="4" placeholder="请简要描述您想咨询的问题（不少于10个字）"></textarea>
+              <p class="field-error" data-error-for="fMessage"></p>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">提交咨询</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- 留言列表 -->
+      <div class="messages">
+        <h3 class="messages-title">最新留言</h3>
+        <div class="message-list" id="messageList">
+          <!-- 由 JS 渲染 -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 页脚 ============ -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="brand-icon" aria-hidden="true">武</span>
+        <span>武汉理工</span>
+      </div>
+      <nav class="footer-links">
+        <a href="#overview" data-scroll>学校概况</a>
+        <a href="#strength" data-scroll>学科实力</a>
+        <a href="#gallery" data-scroll>校园风光</a>
+        <a href="#news" data-scroll>新闻动态</a>
+        <a href="#contact" data-scroll>招生咨询</a>
+      </nav>
+      <p class="footer-copy">© 2024 武汉理工 · 本页面为演示用途，数据均为模拟内容</p>
+    </div>
+  </footer>
+
+  <!-- ============ 通用浮层（学科详情 / 图集预览） ============ -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-mask" data-close></div>
+    <div class="modal-box" id="modalBox">
+      <button class="modal-close" id="modalClose" aria-label="关闭">&times;</button>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- ============ 轻提示 ============ -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
